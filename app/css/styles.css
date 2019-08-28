@@ -1,0 +1,11 @@
+.text-center {
+    text-align: center;
+}
+
+input[type="button"] {
+    width: 100px;
+}
+
+img {
+    margin: 10px;
+}
