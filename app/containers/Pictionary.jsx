@@ -1,60 +1,85 @@
 const React = require('react');
-// const { useState } = require('react');
+const { useState } = require('react');
+const { useEffect } = require('react');
+const { useRef } = require('react');
 const ReactDOM = require('react-dom');
 
 const AnswerField = require('./AnswerField');
 
 
-class Pictionary extends React.Component {
+function Pictionary(props) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            word: '',
-            imgUrl: '',
-            roundsLeft: 1
-        }
-        this.getWord = this.getWord.bind(this);
-        this.finishRound = this.finishRound.bind(this);
-    }
+    // for display
+    const [word, setWord] = useState("");
+    const [imgUrl, setUrl] = useState("");
 
-    componentDidMount() {
-        this.getWord();
-    }
 
-    async getWord() {
-        const res = await fetch('/icon');
-        const json = await res.json();
-        const word = json.data.icon.term;
-        const imgUrl = json.data.icon.preview_url;
-        this.setState({
-            word,
-            imgUrl,
-        })
-        
-    }
+    const [round, setRound] = useState(1);
+    
+    // to trigger a new round and reset interval
+    const [reset, shouldReset] = useState(false);
+    
+    // 
+    const [score, setScore] = useState(0);
+    const scoreRef = useRef(score);
+    scoreRef.current = score;
 
-    finishRound() {
-        this.getWord();
-        if (this.state.roundsLeft == 0) {
-            this.props.onGameEnd();
+
+
+    useEffect(() => {
+        if (round > 10) {
+            props.onTimeUp(score);
         } else {
-            this.setState({
-                roundsLeft: this.state.roundsLeft - 1
-            })
+            getIcon();
         }
+    },[round])
+
+    const startRound = () => {
+        setRound(round + 1);
     }
 
-    render() {
-        return (
-            <div>
-                <h3>{this.state.word}</h3>
-                <img src={this.state.imgUrl} />
-                {/* <input type="button" value="get word" onClick={getWord}/> */}
-                <AnswerField word={this.state.word} onCorrect={this.finishRound}/>
-            </div>
-        )
+
+    const savedCallback = useRef();
+    useEffect(() => {
+        savedCallback.current = startRound;
+    });
+
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (!reset) {
+            let id = setInterval(tick, 8000);
+            return () => clearInterval(id)
+        } else {
+            setRound(round + 1);
+            let id = setInterval(startRound, 8000);
+            shouldReset(false);
+            return () => clearInterval(id);
+        }
+
+    },[reset])
+
+    const getIcon = () => {
+        const { word, imgUrl } = props.icons[round - 1];
+        setWord(word);
+        setUrl(imgUrl);
     }
+
+    const newRound = () => {
+        setScore(score + 1);
+        shouldReset(true);
+
+    }
+
+    return (
+        <div style={{textAlign: 'center'}}>
+            <h3>Score: {score}</h3>
+            <h3>Round {round}</h3>
+            <img src={imgUrl}/>
+            <AnswerField word={word} onCorrect={newRound}/>
+        </div>
+    )
 }
 
 module.exports = Pictionary;

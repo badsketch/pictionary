@@ -19,20 +19,29 @@ function AnswerField(props) {
         }
     }
 
-    const style = {
+    const inputStyle = {
         outline: 'none',
         border: correct === true ? '1px solid green' 
-            : correct === false ? "1px solid red" : ""
+            : correct === false ? "1px solid red" : "",
+        margin: '0 auto',
+        width: '50%',
+        display: 'inline-block'
     }
+    
+    const charCountStyle = {
+      position: 'relative',
+      right: 45
+    }
+    
     return (
-        <div>
+        <div style={{textAlign: 'center'}}>
             <input 
-                style={style}
+                style={inputStyle}
                 value={inputValue} 
                 placeholder="type here" 
                 onChange={handleChange}
             />
-            <div>{inputValue.length}/{props.word.length}</div>
+            <span style={charCountStyle}>{inputValue.length}/{props.word.length}</span>
         </div>
     )
 }
