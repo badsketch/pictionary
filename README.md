@@ -1,4 +1,4 @@
-# p<i>ct</i>onary
+# p\<i\>ct\</i\>onary
 guessing game with icons
 
 built with react starter app on [glitch](https://glitch.com) 
