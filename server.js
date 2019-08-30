@@ -46,6 +46,6 @@ app.get("/icon", function(request, response) {
 })
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
+var listener = app.listen(3000, function () {
+  console.log('Your app is listening on port 3000');
 });
