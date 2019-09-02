@@ -1,10 +1,8 @@
 const React = require('react');
 const styles = require('../css/styles.css');
-const { useAuth0 } = require('../react-auth0-wrapper');
-
+                                                                                                                                        
 function TitleScreen(props) {
 
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
     const notes = [
         "there are 10 rounds",
@@ -16,15 +14,6 @@ function TitleScreen(props) {
 
     return (
         <div>
-            {
-                !isAuthenticated ? (
-                    <input type="button" value="Log In"
-                        onClick={() => loginWithRedirect({})}
-                    />
-                ) : <input type="button" value="Log Out"
-                        onClick={() => logout()}
-                    />
-            }
             <h1 className="text-center">{'P<i>ct</i>onary'}</h1>
             <ul style={{
                 width: 400,

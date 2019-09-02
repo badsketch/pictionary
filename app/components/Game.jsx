@@ -6,6 +6,7 @@ const TitleScreen = require('./TitleScreen');
 const Pictionary = require('./Pictionary');
 const EndScreen = require('./EndScreen');
 const LoadScreen = require('./LoadScreen');
+const Header = require('../components/Header');
 
 // conditionally display components depending on status
 const Status = {
@@ -41,6 +42,7 @@ function Game() {
 
     return (
         <div>
+            <Header />
             {status === Status.MENU ? 
                 <TitleScreen 
                     onStart={loadIcons}
