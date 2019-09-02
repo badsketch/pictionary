@@ -40,7 +40,7 @@ function LoadScreen(props) {
             }) 
     }
 
-    const fetchWord = async(id) => {
+    const fetchWord = async () => {
         
         try {
             const res = await fetch(`/icon`);
@@ -54,7 +54,8 @@ function LoadScreen(props) {
     return (
         failed ? (
                 <div style={{ textAlign: 'center'}}>
-                    <h4>Looks like one of the icons couldn't be retrieved or I reached my API call limit =/</h4>
+                    <h4>Looks like one of the icons couldn't be retrieved because the random id didn't correspond to an icon 
+                        or I reached my API call limit =/</h4>
                     <input type="button" value="Retry?" onClick={fetchIcons} /> 
                 </div>
             ) :

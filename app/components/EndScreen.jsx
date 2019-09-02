@@ -2,6 +2,10 @@ const React = require('react');
 const styles = require('../css/styles.css');
 
 function EndScreen(props) {
+
+    const answerStyles = {
+
+    }
     return (
         <div>
             <h1 className="text-center">Score: {props.score}</h1>
@@ -17,10 +21,16 @@ function EndScreen(props) {
                             <div>
                                 <img style = {{
                                     width: 30,
-                                    height: 30
+                                    height: 30,
+                                    margin: 0
                                 }}
                                 src={imgUrl}/>
-                                {word}
+                                <span
+                                    style={{
+                                        position: 'relative',
+                                        bottom: 5
+                                    }}
+                                >{word}</span>
                             </div>
                         )
                     })

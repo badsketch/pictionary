@@ -15,35 +15,43 @@ function Pictionary(props) {
 
 
     const [round, setRound] = useState(1);
-    
-    // to trigger a new round and reset interval
-    const [reset, shouldReset] = useState(false);
-    
-    // 
     const [score, setScore] = useState(0);
-    const scoreRef = useRef(score);
-    scoreRef.current = score;
-
-
-
+    
+    
+    
+    
+    // gets the next icon when the round updates
     useEffect(() => {
         if (round > 10) {
-            props.onTimeUp(score);
+            props.onRoundsFinished(score);
         } else {
             getIcon();
         }
     },[round])
 
+    
     const startRound = () => {
         setRound(round + 1);
     }
 
-
+    
+    // tweaked version of Dan Abramov's setInterval to allow resetting
+    // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+    
+    // to trigger a new round and reset interval
+    const [reset, shouldReset] = useState(false);
+    
+    // stores setInterval callback because effects refresh on state change
+    // so the original interval callback doesn't persist
     const savedCallback = useRef();
+    
+    
     useEffect(() => {
         savedCallback.current = startRound;
     });
-
+    
+    // recreates the interval using the stored callback
+    // tweaked to allow resets 
     useEffect(() => {
         function tick() {
             savedCallback.current();
@@ -52,6 +60,8 @@ function Pictionary(props) {
             let id = setInterval(tick, 8000);
             return () => clearInterval(id)
         } else {
+            // if resetting, then do discard callback from previous state
+            // and reinitialize the interval
             setRound(round + 1);
             let id = setInterval(startRound, 8000);
             shouldReset(false);
@@ -59,6 +69,8 @@ function Pictionary(props) {
         }
 
     },[reset])
+
+    
 
     const getIcon = () => {
         const { word, imgUrl } = props.icons[round - 1];
