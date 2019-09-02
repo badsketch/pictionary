@@ -7,7 +7,7 @@ function TitleScreen(props) {
         "there are 10 rounds",
         "you have 8 seconds to try to guess the icon",
         "case doesn't matter, but spaces do",
-        "my best is 6, so see if you can beat that!",
+        "my best is 8, so see if you can beat that!",
         "also, no looking at dev tools for the answers",
     ]
 
@@ -29,7 +29,7 @@ function TitleScreen(props) {
                 }} 
                 type="button" 
                 value="Start!" 
-                onClick={props.onClick} />
+                onClick={props.onStart} />
         </div>
     )
 }
