@@ -1,13 +1,13 @@
 
 const React = require('react');
 const { useState } = require('react');
-const { useEffect } = require('react');
-const ReactDOM = require('react-dom');
 
-const TitleScreen = require('../components/TitleScreen');
+const TitleScreen = require('./TitleScreen');
 const Pictionary = require('./Pictionary');
-const EndScreen = require('../components/EndScreen');
+const EndScreen = require('./EndScreen');
 const LoadScreen = require('./LoadScreen');
+
+// conditionally display components depending on status
 const Status = {
     MENU: 1,
     LOADING: 2,
@@ -24,8 +24,8 @@ function Game() {
     const loadIcons = () => {
         setStatus(Status.LOADING);
     }
+
     const startGame = (data) => {
-        console.log('in game, icons: ', data);
         setIcons(data);
         setStatus(Status.IN_PROGRESS)
     }
@@ -35,7 +35,7 @@ function Game() {
         setFinalScore(score);
     }
 
-    const restart = () => {
+    const toMenu = () => {
         setStatus(Status.MENU);
     }
 
@@ -43,7 +43,7 @@ function Game() {
         <div>
             {status === Status.MENU ? 
                 <TitleScreen 
-                    onClick={loadIcons}
+                    onStart={loadIcons}
                 /> : null
             }
 
@@ -55,7 +55,7 @@ function Game() {
             {status === Status.IN_PROGRESS && icons.length ? 
                 <Pictionary 
                     icons={icons}
-                    onTimeUp={endGame}
+                    onRoundsFinished={endGame}
                 /> : null
             }
     
@@ -64,7 +64,7 @@ function Game() {
                     score={finalScore}
                     icons={icons}
                     onTryAgain={loadIcons}
-                    onMenu={restart}
+                    onMenu={toMenu}
                 /> : null
             }
         </div>
